@@ -16,6 +16,7 @@ public class Dynasty {
         dynastyTree.put(queenNode.getName(),queenNode);
         dynastyTree.put(kingNode.getName(),kingNode);
 
+
     }
 
 
