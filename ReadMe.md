@@ -1,8 +1,3 @@
-# Problem Statement
-This code is meant to solve the problem stated here -> https://codu.ai/coding-problem/mymoney.
-
-Your objective is to improve the code, make sure all output cases are covered, and unit tests pass. 
-
 # Pre-requisites
 * Java 1.8/1.11/1.15
 * Maven
