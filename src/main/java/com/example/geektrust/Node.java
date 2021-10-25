@@ -3,7 +3,7 @@ package com.example.geektrust;
 
 
 import java.util.HashSet;
-
+// TODO throws null when invalid values called via Dynasty!!
 public class Node {
 
     private final String name;
@@ -20,9 +20,6 @@ public class Node {
         this.kids = new HashSet<>();
     }
 
-//    public void addPartnerName(String partnerName) {
-//        this.partnerName = partnerName;
-//    }
 
 //      TODO: Check if I should use this here or elsewhere , Can getter setter be private?
       public boolean addPartnerNameOnlyOnce(String partnerName) {
@@ -33,11 +30,6 @@ public class Node {
 
 //      this.partnerName = this.partnerName == null ? partnerName : this.partnerName;
       }
-
-//    public void addKid(String kid) {
-//        this.kids.add(kid);
-//    }
-
 
 
 // TODO: Check if I should use this here or elsewhere , Can getter setter be private?
@@ -73,4 +65,6 @@ public class Node {
     public HashSet<String> getKids() {
         return kids;
     }
+
+    // TODO override to string
 }

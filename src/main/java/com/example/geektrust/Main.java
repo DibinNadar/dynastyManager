@@ -1,7 +1,5 @@
 package com.example.geektrust;
 
-import java.util.HashMap;
-
 public class Main {
 
     // TODO Add some sort of logging as an alternative to custom exceptions so I know WHY the methods are failing
@@ -11,231 +9,130 @@ public class Main {
     //  Each dynasty can have only one queen
 
 
-    // Dynasty Manager()
-    public boolean marry(String femaleName, String maleName, HashMap<String, Node> dynasty) {
-
-        // Not in the dynasty
-        if (!dynasty.containsKey(femaleName) || !dynasty.containsKey(maleName)) return false;
-
-        // Creating references
-        Node female = dynasty.get(femaleName);
-        Node male = dynasty.get(maleName);
-
-        // Someone already married
-        if (female.getPartnerName()!=null || male.getPartnerName()!=null) return false;
-
-        // Incorrect genders passed
-        if (female.getGender()!=Gender.FEMALE || male.getGender()!=Gender.MALE) return false;
-
-        return male.addPartnerNameOnlyOnce(femaleName) && female.addPartnerNameOnlyOnce(maleName);
-    }
-
-    // Dynasty Manager()
-    public boolean addKid(String motherName, String kidName, HashMap<String, Node> dynasty){
-
-//        TODO Simplify mom-child loop understanding
-
-        // Not in dynasty
-        if (!dynasty.containsKey(motherName) || !dynasty.containsKey(kidName)) return false;
-
-        Node mother = dynasty.get(motherName);
-        Node kid = dynasty.get(kidName);
-
-        // Individual not Female
-        if (mother.getGender()!=Gender.FEMALE) return false;
-
-        // Mother has no partner
-        if (mother.getPartnerName()==null) return false;
-
-        // Kid already has mother
-        if (kid.getMotherName() != null && !kid.getMotherName().equals(motherName)) return false; // IMP allows set the same relation again
-
-        // Trying to assign same node as mother and child
-        if (mother.equals(kid)) return false;
-
-        // Trying to add child(motherName) as mother(kidName)
-        if (mother.getMotherName() != null && mother.getMotherName().equals(kidName)) return false;
-
-        // Trying to add mother(kidName) as child(motherName)
-        if (!kid.getKids().isEmpty() && kid.getKids().contains(motherName)) return false;
-
-
-        kid.addMotherOnlyOnce(motherName);
-
-        mother.addKidToMother(kidName);
-
-        return true;
-    }
-
-    // Dynasty Manager()
-    public boolean createAndAddKid (String motherName, String kidName, Gender kidGender, HashMap<String, Node> dynasty){
-        // TODO to be implemented
-        return false;
-
-    }
-
     public static void main(String[] args) {
 
-        Main main = new Main();
-        HashMap<String, Node> lengaburuFamilyTree = new HashMap<>();
+        Dynasty lengaburuFamilyTree = new Dynasty("Anga","Shan", "Lengaburu");
 
+        System.out.print(lengaburuFamilyTree.addKid("Anga","Chit",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Anga","Ish",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Anga","Vich",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Anga","Aras",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Anga","Satya",Gender.FEMALE));
+        System.out.println();
+        System.out.println();
 
-/**                Creation                          **/
-        Node anga = new Node("Anga", Gender.FEMALE);
-        Node shan = new Node("Shan", Gender.MALE);
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-        Node chit = new Node("Chit", Gender.MALE);
-        Node ish = new Node("Ish", Gender.MALE);
-        Node vich = new Node("Vich", Gender.MALE);
-        Node aras = new Node("Aras", Gender.MALE);
-        Node satya = new Node("Satya", Gender.FEMALE);
-
-        Node amba = new Node("Amba", Gender.FEMALE);
-        Node lika = new Node("Lika", Gender.FEMALE);
-        Node chitra = new Node("Chitra", Gender.FEMALE);
-        Node vyan = new Node("Vyan", Gender.MALE);
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-        Node dritha = new Node("Dritha", Gender.FEMALE);
-        Node tritha = new Node("Tritha", Gender.FEMALE);
-        Node vritha = new Node("Vritha", Gender.MALE);
-        Node vila = new Node("Vila", Gender.FEMALE);
-        Node chika = new Node("Chika", Gender.FEMALE);
-        Node jnki = new Node("Jnki", Gender.FEMALE);
-        Node ahit = new Node("Ahit", Gender.MALE);
-        Node asva = new Node("Asva", Gender.MALE);
-        Node vyas = new Node("Vyas", Gender.MALE);
-        Node atya = new Node("Atya", Gender.FEMALE);
-
-        Node jaya = new Node("Jaya", Gender.MALE);
-        Node arit = new Node("Arit", Gender.MALE);
-        Node satvy = new Node("Satvy", Gender.FEMALE);
-        Node krpi = new Node("Krpi", Gender.FEMALE);
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-        Node yodhan = new Node("Yodhan", Gender.MALE);
-        Node laki = new Node("Laki", Gender.MALE);
-        Node lavnya = new Node("Lavnya", Gender.FEMALE);
-        Node vasa = new Node("Vasa", Gender.MALE);
-        Node kriya = new Node("Kriya", Gender.MALE);
-        Node krithi = new Node("Krithi", Gender.FEMALE);
-
-
-
-/**                 Insertion                          **/
-
-        lengaburuFamilyTree.put("Anga", anga);
-        lengaburuFamilyTree.put("Shan", shan);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-        lengaburuFamilyTree.put("Chit", chit);
-        lengaburuFamilyTree.put("Ish", ish);
-        lengaburuFamilyTree.put("Vich", vich);
-        lengaburuFamilyTree.put("Aras", aras);
-        lengaburuFamilyTree.put("Satya", satya);
+        System.out.print(lengaburuFamilyTree.marry("Amba", "Chit"));
+        System.out.print(lengaburuFamilyTree.marry("Lika", "Vich"));
+        System.out.print(lengaburuFamilyTree.marry("Chitra", "Aras"));
+        System.out.print(lengaburuFamilyTree.marry("Satya", "Vyan"));
 
-        lengaburuFamilyTree.put("Amba", amba);
-        lengaburuFamilyTree.put("Lika", lika);
-        lengaburuFamilyTree.put("Chitra", chitra);
-        lengaburuFamilyTree.put("Vyan", vyan);
+        System.out.print(lengaburuFamilyTree.addKid("Amba","Dritha",Gender.FEMALE));
+        System.out.print(lengaburuFamilyTree.addKid("Amba","Tritha",Gender.FEMALE));
+        System.out.print(lengaburuFamilyTree.addKid("Amba","Vritha",Gender.MALE));
+
+        System.out.print(lengaburuFamilyTree.addKid("Lika","Vila",Gender.FEMALE));
+        System.out.print(lengaburuFamilyTree.addKid("Lika","Chika",Gender.FEMALE));
+
+        System.out.print(lengaburuFamilyTree.addKid("Chitra","Jnki",Gender.FEMALE));
+        System.out.print(lengaburuFamilyTree.addKid("Chitra","Ahit",Gender.MALE));
+
+        System.out.print(lengaburuFamilyTree.addKid("Satya","Asva",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Satya","Vyas",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Satya","Atya",Gender.FEMALE));
+        System.out.println();
+        System.out.println();
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+        System.out.print(lengaburuFamilyTree.marry("Dritha", "Jaya"));
+        System.out.print(lengaburuFamilyTree.marry("Jnki", "Arit"));
+        System.out.print(lengaburuFamilyTree.marry("Satvy", "Asva"));
+        System.out.print(lengaburuFamilyTree.marry("Krpi", "Vyas"));
+
+        System.out.print(lengaburuFamilyTree.addKid("Dritha","Yodhan",Gender.MALE));
+
+        System.out.print(lengaburuFamilyTree.addKid("Jnki","Laki",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Jnki","Lavnya",Gender.FEMALE));
+
+        System.out.print(lengaburuFamilyTree.addKid("Satvy","Vasa",Gender.MALE));
+
+        System.out.print(lengaburuFamilyTree.addKid("Krpi","Kriya",Gender.MALE));
+        System.out.print(lengaburuFamilyTree.addKid("Krpi","Krithi",Gender.FEMALE));
+        System.out.println("");
+        System.out.println("");
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-        lengaburuFamilyTree.put("Dritha", dritha);
-        lengaburuFamilyTree.put("Tritha", tritha);
-        lengaburuFamilyTree.put("Vritha", vritha);
-        lengaburuFamilyTree.put("Vila", vila);
-        lengaburuFamilyTree.put("Chika", chika);
-        lengaburuFamilyTree.put("Jnki", jnki);
-        lengaburuFamilyTree.put("Ahit", ahit);
-        lengaburuFamilyTree.put("Asva", asva);
-        lengaburuFamilyTree.put("Vyas", vyas);
-        lengaburuFamilyTree.put("Atya", atya);
-
-        lengaburuFamilyTree.put("Jaya", jaya);
-        lengaburuFamilyTree.put("Arit", arit);
-        lengaburuFamilyTree.put("Satvy", satvy);
-        lengaburuFamilyTree.put("Krpi", krpi);
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-        lengaburuFamilyTree.put("Yodhan", yodhan);
-        lengaburuFamilyTree.put("Laki", laki);
-        lengaburuFamilyTree.put("Lavnya", lavnya);
-        lengaburuFamilyTree.put("Vasa", vasa);
-        lengaburuFamilyTree.put("Kriya", kriya);
-        lengaburuFamilyTree.put("Krithi", krithi);
-
-
-
-
-
-        /**                Wedding                          **/
-
-        main.marry("Anga", "Shan", lengaburuFamilyTree);
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-        main.marry("Amba", "Chit", lengaburuFamilyTree);
-        main.marry("Lika", "Vich", lengaburuFamilyTree);
-        main.marry("Chitra", "Aras", lengaburuFamilyTree);
-        main.marry("Satya", "Vyan", lengaburuFamilyTree);
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-        main.marry("Dritha", "Jaya", lengaburuFamilyTree);
-        main.marry("Jnki", "Arit", lengaburuFamilyTree);
-        main.marry("Satvy", "Asva", lengaburuFamilyTree);
-        main.marry("Krpi", "Vyas", lengaburuFamilyTree);
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-        /**                Add Children                          **/
-
-//        main.addKid("Anga","Chit",lengaburuFamilyTree);
-//        main.addKid("Anga","Ish",lengaburuFamilyTree);
-//        main.addKid("Anga","Vich",lengaburuFamilyTree);
-//        main.addKid("Anga","Aras",lengaburuFamilyTree);
-//        main.addKid("Anga","Satya",lengaburuFamilyTree);
-/////////////////////////////////////////////////////////////////////////////////////////////////
+//        System.out.println(lengaburuFamilyTree.getOne("Satya").getName());
+//        System.out.println(lengaburuFamilyTree.getOne("Satya").getGender());
+//        System.out.println(lengaburuFamilyTree.getOne("Satya").getPartnerName());
+//        System.out.println(lengaburuFamilyTree.getOne("Satya").getMotherName());
+//        System.out.println(lengaburuFamilyTree.getOne("Satya").getKids());
 //
-//        main.addKid("Amba","Dritha",lengaburuFamilyTree);
-//        main.addKid("Amba","Tritha",lengaburuFamilyTree);
-//        main.addKid("Amba","Vritha",lengaburuFamilyTree);
+//        System.out.println(lengaburuFamilyTree.addKid("Satya","Satya",Gender.FEMALE));
+//        System.out.println(lengaburuFamilyTree.getOne("Satya").getKids());
 //
-//        main.addKid("Lika","Vila",lengaburuFamilyTree);
-//        main.addKid("Lika","Chika",lengaburuFamilyTree);
+//        System.out.println(lengaburuFamilyTree.addKid("Krithi","Test",Gender.FEMALE));
+//        System.out.println(lengaburuFamilyTree.getOne("Krithi").getKids());
 //
-//        main.addKid("Chitra","Jnki",lengaburuFamilyTree);
-//        main.addKid("Chitra","Ahit",lengaburuFamilyTree);
+//        System.out.println("");
+//        System.out.println("Married :"+lengaburuFamilyTree.marry("Satya","Jhon"));
+//        System.out.println(lengaburuFamilyTree.containsOne("Jhon"));
+//        System.out.println(lengaburuFamilyTree.getOne("Jhon"));
+////        // TODO Throws null pointer, create Optional? or add it as a future todo?
+////        System.out.println(lengaburuFamilyTree.getOne("Jhon").getName());
+////        System.out.println(lengaburuFamilyTree.getOne("Lazu").getName());
 //
-//        main.addKid("Satya","Asva",lengaburuFamilyTree);
-//        main.addKid("Satya","Vyas",lengaburuFamilyTree);
-//        main.addKid("Satya","Atya",lengaburuFamilyTree);
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//        System.out.println(lengaburuFamilyTree.getOne("Chika").getName());
+////        System.out.println(lengaburuFamilyTree.getOne("Donkey").getName());
+
+        System.out.println("----------------Mother-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.MOTHER));
+        System.out.println(lengaburuFamilyTree.getRelationship("Dritha",Relation.MOTHER));   // Amba
+        System.out.println(lengaburuFamilyTree.getRelationship("Jaya",Relation.MOTHER));
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.MOTHER));
+        System.out.println(lengaburuFamilyTree.getRelationship("Vritha",Relation.MOTHER));
+        System.out.println("");
+
+        System.out.println("----------------Father-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.FATHER));
+        System.out.println(lengaburuFamilyTree.getRelationship("Dritha",Relation.FATHER));   // Chit
+        System.out.println(lengaburuFamilyTree.getRelationship("Jaya",Relation.FATHER));
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.FATHER));
+        System.out.println("");
+
+        System.out.println("----------------Children-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.CHILDREN));  //  satya, chit, ish, vich, aras
+        System.out.println(lengaburuFamilyTree.getRelationship("Dritha",Relation.CHILDREN));// yodhan
+        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.CHILDREN));  // lavnya, laki
+        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.CHILDREN));  // lavnya, laki
+        System.out.println(lengaburuFamilyTree.getRelationship("Vritha",Relation.CHILDREN));
+        System.out.println(lengaburuFamilyTree.getRelationship("Amba",Relation.CHILDREN));  // dritha tritha, vritha
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.CHILDREN));
+        System.out.println("");
+
+        System.out.println("----------------Daughter-------------------");
+//        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.DAUGHTER));  //  satya
+//        System.out.println(lengaburuFamilyTree.getRelationship("Dritha",Relation.DAUGHTER));
+//        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.DAUGHTER));  // lavnya
+//        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.DAUGHTER));  // lavnya
+//        System.out.println(lengaburuFamilyTree.getRelationship("Vritha",Relation.DAUGHTER));
+//        System.out.println(lengaburuFamilyTree.getRelationship("Amba",Relation.DAUGHTER));  // dritha tritha
+//        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.DAUGHTER));
+        System.out.println("");
 //
-//        main.addKid("Dritha","Yodhan",lengaburuFamilyTree);
-//
-//        main.addKid("Jnki","Laki",lengaburuFamilyTree);
-//        main.addKid("Jnki","Lavnya",lengaburuFamilyTree);
-//
-//        main.addKid("Satvy","Vasa",lengaburuFamilyTree);
-//
-//        main.addKid("Krpi","Kriya",lengaburuFamilyTree);
-//        main.addKid("Krpi","Krithi",lengaburuFamilyTree);
-///////////////////////////////////////////////////////////////////////////////////////////////////
+//        System.out.println("----------------Son-------------------");
+//        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.SON));  //  chit, ish, vich, aras
+//        System.out.println(lengaburuFamilyTree.getRelationship("Vich",Relation.SON));
+//        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.SON));  // laki
+//        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.SON));  // laki
+//        System.out.println(lengaburuFamilyTree.getRelationship("Vritha",Relation.SON));
+//        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.SON));
+//        System.out.println("");
 
 
-
-Node testNode = new Node("Test", Gender.FEMALE);
-Node testMale = new Node("TestMale", Gender.MALE);
-Node testKid = new Node("TestKid", Gender.FEMALE);
-
-lengaburuFamilyTree.put("Test", testNode);
-lengaburuFamilyTree.put("TestMale", testMale);
-lengaburuFamilyTree.put("TestKid", testKid);
-
-main.marry("Test", "TestMale", lengaburuFamilyTree);
-System.out.println("Is this a nuclear family? "+main.addKid("Test","TestKid",lengaburuFamilyTree));
-
+        System.out.println("");
+                System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.DAUGHTER));  // lavnya
 
     }
 }
