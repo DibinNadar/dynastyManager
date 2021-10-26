@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 public class Dynasty {
 
     private final String dynastyName;
-    private final HashMap<String, Node> familyTree;
+    private final LinkedHashMap<String,Node> familyTree;
     private final Node queenNode;
     private final Node kingNode;
 
     public Dynasty(String queenName, String kingName, String dynastyName) {
-        this.familyTree = new HashMap<>();
+        this.familyTree = new LinkedHashMap<>();
         this.queenNode = new Node(queenName, Gender.FEMALE);
         this.kingNode = new Node(kingName, Gender.MALE);
         this.dynastyName = dynastyName;
@@ -116,7 +116,6 @@ public class Dynasty {
             case BROTHER:
                 return findSiblingsByGender(relationOf, defaultResponse, Gender.MALE);
 
-
             case SISTER_IN_LAW:
                 return findSisterInLaw(relationOf,defaultResponse);
 
@@ -124,20 +123,22 @@ public class Dynasty {
                 return findBrotherInLaw(relationOf,defaultResponse);
 
             case MATERNAL_AUNT:
+                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.MOTHER, Gender.FEMALE);
+
             case MATERNAL_UNCLE:
+                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.MOTHER,Gender.MALE);
 
             case PATERNAL_AUNT:
+                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.FATHER,Gender.FEMALE);
+
             case PATERNAL_UNCLE:
+                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.FATHER,Gender.MALE);
 
 
             default:
                 return defaultResponse;
         }
     }
-
-    // TODO Unify all methods structure, return same dataTypes, basically be more elegant
-    //  code consistency, stringBuilder everywhere?
-
 
     private String findAllChildren(String relationOf, String defaultResponse) {
         if (getOne(relationOf).getPartnerName() == null) return defaultResponse;
@@ -147,10 +148,9 @@ public class Dynasty {
             mother = getOne(relationOf).getPartnerName();
         } else mother = getOne(relationOf).getName();
 
-        Set<String> allKids = new HashSet<>(getOne(mother).getKids());
-        List<String> all = new LinkedList<>(getOne(mother).getKids());
-        return all.isEmpty() ? defaultResponse : all.toString();
-//        return allKids.isEmpty() ? defaultResponse : allKids.toString();
+        List<String> allKids = new LinkedList<>(getOne(mother).getKids());
+
+        return allKids.isEmpty() ? defaultResponse : beautifyOutput(allKids);
     }
 
     private String findChildrenByGender(String relationOf, String defaultResponse, Gender gender) {
@@ -158,31 +158,21 @@ public class Dynasty {
         String kids = findAllChildren(relationOf, defaultResponse);
         if (kids.equals(defaultResponse)) return defaultResponse;
 
-        kids = kids.substring(1, kids.length() - 1); // removing []
-        String[] kidsArray = kids.split(", ");
-
-        List<String> filteredKidList = Arrays
-                .stream(kidsArray)
-                .filter(kid -> getOne(kid)
-                        .getGender()
-                        .equals(gender))
-                .collect(Collectors.toList());
-
-        return filteredKidList.isEmpty() ? defaultResponse : filteredKidList.toString();
-
+        return genderFilter(kids,defaultResponse,gender);
     }
 
-    // TODO: Check if too much code hopping
     private String findAllSiblings(String relationOf, String defaultResponse) {
 
         String mother = getRelationship(relationOf, Relation.MOTHER);
         if (mother.equals(defaultResponse)) return defaultResponse;
 
-        Set<String> allKids = new HashSet<>(getOne(mother).getKids());
+        List<String> allKids = new LinkedList<>(getOne(mother).getKids());
 
-        List<String> allSiblings = allKids.stream().filter(kid -> !kid.equals(relationOf)).collect(Collectors.toList());
+        List<String> allSiblings = allKids.stream()
+                .filter(kid -> !kid.equals(relationOf))
+                .collect(Collectors.toList());
 
-        return allSiblings.isEmpty() ? defaultResponse : allSiblings.toString();
+        return allSiblings.isEmpty() ? defaultResponse : beautifyOutput(allSiblings);
     }
 
     private String findSiblingsByGender(String relationOf, String defaultResponse, Gender gender){
@@ -190,21 +180,9 @@ public class Dynasty {
         String siblings = findAllSiblings(relationOf, defaultResponse);
         if (siblings.equals(defaultResponse)) return defaultResponse;
 
-        siblings = siblings.substring(1, siblings.length() - 1);
-        String[] kidsArray = siblings.split(", ");
-
-        List<String> filteredKidList = Arrays
-                .stream(kidsArray)
-                .filter(kid -> getOne(kid)
-                        .getGender()
-                        .equals(gender))
-                .collect(Collectors.toList());
-
-        return filteredKidList.isEmpty() ? defaultResponse : filteredKidList.toString();
-
+        return genderFilter(siblings,defaultResponse,gender);
     }
 
-    // TODO needs major attention
     private String findBrotherInLaw(String relationOf, String defaultResponse){
         String partner = getOne(relationOf).getPartnerName();
         String mother = getOne(relationOf).getMotherName();
@@ -213,35 +191,23 @@ public class Dynasty {
             String sisters = findSiblingsByGender(relationOf,defaultResponse,Gender.FEMALE);
             if (sisters.equals(defaultResponse)) return defaultResponse;
 
+            List<String> sisterList = genderFilterList(sisters, Gender.FEMALE);
+
             StringBuilder brotherInLaw = new StringBuilder();
-
-            sisters = sisters.substring(1, sisters.length() - 1);
-            String[] sistersArray = sisters.split(", ");
-
-            List<String> sisterList = Arrays
-                    .stream(sistersArray)
-                    .filter(sister -> getOne(sister)
-                            .getGender()
-                            .equals(Gender.FEMALE))
-                    .collect(Collectors.toList());
 
             for (String sister:sisterList){
                 String husband = getOne(sister).getPartnerName();
                 if (!husband.equals(defaultResponse)){
-                    brotherInLaw.append(husband).append(" ");  // TODO check formaot in sisterInLaw for Atya
+                    brotherInLaw.append(husband).append(" ");
                 }
             }
-
             return brotherInLaw.toString();
         }
-
-
         String filteredBrotherInLaw = findSiblingsByGender(partner,defaultResponse,Gender.MALE);
 
         return filteredBrotherInLaw.isEmpty() ? defaultResponse : filteredBrotherInLaw;
     }
 
-    // TODO needs major attention
     private String findSisterInLaw(String relationOf, String defaultResponse){
         String partner = getOne(relationOf).getPartnerName();
         String mother = getOne(relationOf).getMotherName();
@@ -252,16 +218,7 @@ public class Dynasty {
 
             StringBuilder sisterInLaw = new StringBuilder();
 
-            brothers = brothers.substring(1, brothers.length() - 1);
-            String[] brothersArray = brothers.split(", ");
-
-            List<String> brotherList = Arrays
-                    .stream(brothersArray)
-                    .filter(brother -> getOne(brother)
-                            .getGender()
-                            .equals(Gender.MALE))
-                    .collect(Collectors.toList());
-
+            List<String> brotherList = genderFilterList(brothers,Gender.MALE);
             for (String brother:brotherList){
                 String wife = getOne(brother).getPartnerName();
                 if (wife != null){
@@ -278,6 +235,12 @@ public class Dynasty {
         return filteredSisterInLaw.isEmpty() ? defaultResponse : filteredSisterInLaw;
     }
 
+    private String findMaternalPaternalAuntUncle(String relationOf, String defaultResponse, Relation relation, Gender gender){
+        String parent = getRelationship(relationOf, relation);
+        return findSiblingsByGender(parent,defaultResponse,gender);
+    }
+
+
     public Node getOne(String nodeName) {
         return familyTree.get(nodeName);
     }
@@ -286,7 +249,7 @@ public class Dynasty {
         return familyTree.containsKey(nodeName);
     }
 
-    public HashMap<String, Node> getFamilyTree() {
+    public LinkedHashMap<String, Node> getFamilyTree() {
         return familyTree;
     }
 
@@ -301,5 +264,35 @@ public class Dynasty {
     public String getDynastyName() {
         return dynastyName;
     }
+
+    private String beautifyOutput(List<String> input){
+        StringBuilder builder = new StringBuilder();
+
+        for (String string: input){
+            builder.append(string).append(" ");
+        }
+        return builder.toString();
+    }
+
+    private String genderFilter(String inputString, String defaultResponse, Gender gender){
+        String[] array = inputString.split(" ");
+
+        List<String> filteredByGenderList = Arrays
+                .stream(array)
+                .filter(person -> getOne(person).getGender().equals(gender))
+                .collect(Collectors.toList());
+
+        return filteredByGenderList.isEmpty() ? defaultResponse : beautifyOutput(filteredByGenderList);
+    }
+
+    private List<String> genderFilterList(String inputString, Gender gender){
+        String[] array = inputString.split(" ");
+
+        return Arrays
+                .stream(array)
+                .filter(person -> getOne(person).getGender().equals(gender))
+                .collect(Collectors.toList());
+    }
+
 
 }

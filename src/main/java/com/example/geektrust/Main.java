@@ -91,7 +91,7 @@ public class Main {
         System.out.println(lengaburuFamilyTree.getRelationship("Dritha",Relation.MOTHER));   // Amba
         System.out.println(lengaburuFamilyTree.getRelationship("Jaya",Relation.MOTHER));
         System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.MOTHER));
-        System.out.println(lengaburuFamilyTree.getRelationship("Vritha",Relation.MOTHER));
+        System.out.println(lengaburuFamilyTree.getRelationship("Vritha",Relation.MOTHER));   // Amba
         System.out.println("");
 
         System.out.println("----------------Father-------------------");
@@ -101,8 +101,8 @@ public class Main {
         System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.FATHER));
         System.out.println("");
 
-        System.out.println("----------------Children-------------------");
-        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.CHILDREN));  //  satya, chit, ish, vich, aras
+        System.out.println("----------------Children-------------------"); //TODO SEQUENCE needs to be fixed
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.CHILDREN));  //  chit, ish, vich, aras, satya
         System.out.println(lengaburuFamilyTree.getRelationship("Dritha",Relation.CHILDREN));// yodhan
         System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.CHILDREN));  // lavnya, laki
         System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.CHILDREN));  // lavnya, laki
@@ -173,16 +173,57 @@ public class Main {
         System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.SISTER_IN_LAW));
         System.out.println(lengaburuFamilyTree.getRelationship("Vich",Relation.SISTER_IN_LAW));  // amba chitra
         System.out.println("");
+        
+        System.out.println("----------------Maternal Aunt-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.MATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Lika",Relation.MATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.MATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.MATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Ahit",Relation.MATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Yodhan",Relation.MATERNAL_AUNT));  // tritha
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.MATERNAL_AUNT));
+        System.out.println("");
+        
+        System.out.println("----------------Maternal Uncle-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.MATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Lika",Relation.MATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.MATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.MATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Ahit",Relation.MATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Yodhan",Relation.MATERNAL_UNCLE));  // vritha
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.MATERNAL_UNCLE));
+        System.out.println("");
+        
+        System.out.println("----------------Paternal Aunt-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.PATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Lika",Relation.PATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.PATERNAL_AUNT));   // satya
+        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.PATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Ahit",Relation.PATERNAL_AUNT));   // satya
+        System.out.println(lengaburuFamilyTree.getRelationship("Yodhan",Relation.PATERNAL_AUNT));
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.PATERNAL_AUNT));
+        System.out.println("");
+
+        System.out.println("----------------Paternal Uncle-------------------");
+        System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.PATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Lika",Relation.PATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.PATERNAL_UNCLE));  // chit, ish, vich
+        System.out.println(lengaburuFamilyTree.getRelationship("Arit",Relation.PATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Ahit",Relation.PATERNAL_UNCLE));  // chit, ish, vich
+        System.out.println(lengaburuFamilyTree.getRelationship("Yodhan",Relation.PATERNAL_UNCLE));
+        System.out.println(lengaburuFamilyTree.getRelationship("Drithaaa",Relation.PATERNAL_UNCLE));
+        System.out.println("");
 
 
-//        System.out.println("");
-//                System.out.println(lengaburuFamilyTree.getRelationship("Jnki",Relation.DAUGHTER));  // lavnya
+        System.out.println("");
+                System.out.println(lengaburuFamilyTree.getFamilyTree());
 
     }
 }
 
 /**
  * RULES
+ * d output the people corresponding to the relationship in the order in  which they were added to the family tree :for some reason it isn't
  * Input format to add a child:
  * ADD_CHILD ”Mother’s-Name" "Child's-Name" "Gender"
  * <p>
