@@ -4,10 +4,6 @@ public class Main {
 
     // TODO Add some sort of logging as an alternative to custom exceptions so I know WHY the methods are failing
 
-    // TODO eliminate Nuclear Families, probably make having mother mandatory while entering dynasty
-    //  to do so, give the king and queen unique no parent rules, or initialise their names when the dynasty HashMap is created?
-    //  Each dynasty can have only one queen
-
 
     public static void main(String[] args) {
 
@@ -62,29 +58,6 @@ public class Main {
         System.out.println("");
         System.out.println("");
 ///////////////////////////////////////////////////////////////////////////////////////////////
-
-//        System.out.println(lengaburuFamilyTree.getOne("Satya").getName());
-//        System.out.println(lengaburuFamilyTree.getOne("Satya").getGender());
-//        System.out.println(lengaburuFamilyTree.getOne("Satya").getPartnerName());
-//        System.out.println(lengaburuFamilyTree.getOne("Satya").getMotherName());
-//        System.out.println(lengaburuFamilyTree.getOne("Satya").getKids());
-//
-//        System.out.println(lengaburuFamilyTree.addKid("Satya","Satya",Gender.FEMALE));
-//        System.out.println(lengaburuFamilyTree.getOne("Satya").getKids());
-//
-//        System.out.println(lengaburuFamilyTree.addKid("Krithi","Test",Gender.FEMALE));
-//        System.out.println(lengaburuFamilyTree.getOne("Krithi").getKids());
-//
-//        System.out.println("");
-//        System.out.println("Married :"+lengaburuFamilyTree.marry("Satya","Jhon"));
-//        System.out.println(lengaburuFamilyTree.containsOne("Jhon"));
-//        System.out.println(lengaburuFamilyTree.getOne("Jhon"));
-////        // TODO Throws null pointer, create Optional? or add it as a future todo?
-////        System.out.println(lengaburuFamilyTree.getOne("Jhon").getName());
-////        System.out.println(lengaburuFamilyTree.getOne("Lazu").getName());
-//
-//        System.out.println(lengaburuFamilyTree.getOne("Chika").getName());
-////        System.out.println(lengaburuFamilyTree.getOne("Donkey").getName());
 
         System.out.println("----------------Mother-------------------");
         System.out.println(lengaburuFamilyTree.getRelationship("Anga",Relation.MOTHER));
@@ -224,6 +197,7 @@ public class Main {
 /**
  * RULES
  * d output the people corresponding to the relationship in the order in  which they were added to the family tree :for some reason it isn't
+ * The test file will contain only commands to modify or verify the family tree
  * Input format to add a child:
  * ADD_CHILD ”Mother’s-Name" "Child's-Name" "Gender"
  * <p>

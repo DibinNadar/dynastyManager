@@ -10,6 +10,7 @@ public class Dynasty {
     private final Node queenNode;
     private final Node kingNode;
 
+
     public Dynasty(String queenName, String kingName, String dynastyName) {
         this.familyTree = new LinkedHashMap<>();
         this.queenNode = new Node(queenName, Gender.FEMALE);
@@ -23,21 +24,21 @@ public class Dynasty {
         kingNode.addPartnerNameOnlyOnce(queenNode.getName());
     }
 
-    public boolean addKid(String motherName, String kidName, Gender kidGender) {
+    public String addKid(String motherName, String kidName, Gender kidGender) {
 
         // Mother not in dynasty
-        if (!this.familyTree.containsKey(motherName)) return false;
+        if (!this.familyTree.containsKey(motherName)) return "PERSON_NOT_FOUND";
 
         // Child Name already in dynasty
-        if (this.familyTree.containsKey(kidName)) return false;
+        if (this.familyTree.containsKey(kidName)) return "CHILD_ADDITION_FAILED";
 
         Node mother = this.familyTree.get(motherName);
 
         // Mother not Female
-        if (mother.getGender() != Gender.FEMALE) return false;
+        if (mother.getGender() != Gender.FEMALE) return "CHILD_ADDITION_FAILED";
 
         // Mother has no partner
-        if (mother.getPartnerName() == null) return false;
+        if (mother.getPartnerName() == null) return "CHILD_ADDITION_FAILED";
 
         Node kid = new Node(kidName, kidGender);
         this.familyTree.put(kidName, kid);
@@ -45,7 +46,7 @@ public class Dynasty {
         kid.addMotherOnlyOnce(motherName);
         mother.addKidToMother(kidName);
 
-        return true;
+        return "CHILD_ADDITION_SUCCEEDED";
     }
 
     public boolean marry(String femaleName, String maleName) {
@@ -78,65 +79,67 @@ public class Dynasty {
         return male.addPartnerNameOnlyOnce(femaleName) && female.addPartnerNameOnlyOnce(maleName);
     }
 
+    // TODO is no one fits then return NONE!!
     public String getRelationship(String relationOf, Relation relationship) { // TODO better names
 
-        String defaultResponse = "PERSON_NOT_FOUND";
+        String personNotFound = "PERSON_NOT_FOUND";
+//        String noValidPerson = "None";
         String relation;
 
-        if (!containsOne(relationOf)) return defaultResponse;
+        if (!containsOne(relationOf)) return personNotFound;
 
         switch (relationship) {
 
             case MOTHER:
                 relation = getOne(relationOf).getMotherName();
-                return relation == null ? defaultResponse : relation;
+                return relation == null ? personNotFound : relation;
 
             case FATHER:
                 String mother = getRelationship(relationOf, Relation.MOTHER);
-                if (mother.equals(defaultResponse)) return defaultResponse;
+                if (mother.equals(personNotFound)) return personNotFound;
 
                 relation = getOne(mother).getPartnerName();
-                return relation == null ? defaultResponse : relation;
+                return relation == null ? personNotFound : relation;
 
             case CHILDREN:
-                return findAllChildren(relationOf, defaultResponse);
+                return findAllChildren(relationOf, personNotFound);
 
             case DAUGHTER:
-                return findChildrenByGender(relationOf, defaultResponse, Gender.FEMALE);
+                return findChildrenByGender(relationOf, personNotFound, Gender.FEMALE);
 
             case SON:
-                return findChildrenByGender(relationOf, defaultResponse, Gender.MALE);
+                return findChildrenByGender(relationOf, personNotFound, Gender.MALE);
 
             case SIBLINGS:
-                return findAllSiblings(relationOf, defaultResponse);
+                return findAllSiblings(relationOf, personNotFound);
 
             case SISTER:
-                return findSiblingsByGender(relationOf, defaultResponse, Gender.FEMALE);
+                return findSiblingsByGender(relationOf, personNotFound, Gender.FEMALE);
 
             case BROTHER:
-                return findSiblingsByGender(relationOf, defaultResponse, Gender.MALE);
+                return findSiblingsByGender(relationOf, personNotFound, Gender.MALE);
 
             case SISTER_IN_LAW:
-                return findSisterInLaw(relationOf,defaultResponse);
+                return findSisterInLaw(relationOf,personNotFound);
 
             case BROTHER_IN_LAW:
-                return findBrotherInLaw(relationOf,defaultResponse);
+                return findBrotherInLaw(relationOf,personNotFound);
 
             case MATERNAL_AUNT:
-                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.MOTHER, Gender.FEMALE);
+                return findMaternalPaternalAuntUncle(relationOf,personNotFound,Relation.MOTHER, Gender.FEMALE);
 
             case MATERNAL_UNCLE:
-                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.MOTHER,Gender.MALE);
+                return findMaternalPaternalAuntUncle(relationOf,personNotFound,Relation.MOTHER,Gender.MALE);
 
             case PATERNAL_AUNT:
-                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.FATHER,Gender.FEMALE);
+                return findMaternalPaternalAuntUncle(relationOf,personNotFound,Relation.FATHER,Gender.FEMALE);
 
             case PATERNAL_UNCLE:
-                return findMaternalPaternalAuntUncle(relationOf,defaultResponse,Relation.FATHER,Gender.MALE);
+                return findMaternalPaternalAuntUncle(relationOf,personNotFound,Relation.FATHER,Gender.MALE);
 
 
             default:
-                return defaultResponse;
+                return personNotFound;
         }
     }
 
@@ -222,7 +225,7 @@ public class Dynasty {
             for (String brother:brotherList){
                 String wife = getOne(brother).getPartnerName();
                 if (wife != null){
-                    sisterInLaw.append(wife).append(" "); // TODO check formaot in sisterInLaw for Atya
+                    sisterInLaw.append(wife).append(" ");
                 }
             }
             return sisterInLaw.toString().isEmpty() ? defaultResponse : sisterInLaw.toString();
@@ -239,7 +242,6 @@ public class Dynasty {
         String parent = getRelationship(relationOf, relation);
         return findSiblingsByGender(parent,defaultResponse,gender);
     }
-
 
     public Node getOne(String nodeName) {
         return familyTree.get(nodeName);

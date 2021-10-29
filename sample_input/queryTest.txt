@@ -1,0 +1,24 @@
+ADD_CHILD Pjali Srutak Male                    PERSON_NOT_FOUND
+GET_RELATIONSHIP Pjali Son                     PERSON_NOT_FOUND
+ADD_CHILD Asva Vani Female                     CHILD_ADDITION_FAILED
+GET_RELATIONSHIP Atya Sister-In-Law            Satvy Krpi
+ADD_CHILD Satya Ketu Male                      CHILD_ADDITION_SUCCEEDED
+GET_RELATIONSHIP Kriya Paternal-Uncle          Asva Ketu
+GET_RELATIONSHIP Satvy Brother-In-Law          Ketu Vyas
+GET_RELATIONSHIP Satvy Sister-In-Law           Atya
+WRONGGGGGGGGGG    GET_RELATIONSHIP Ish Son     NONE
+WRONGGGGGGGGGG GET_RELATIONSHIP Vasa Siblings  NONE
+
+GET_RELATIONSHIP Misha Daughter                PERSON_NOT_FOUND
+
+GET_RELATIONSHIP Anga CHILDREN                 chit, ish, vich, aras, satya  SEQUENCE!!!
+GET_RELATIONSHIP Arit DAUGHTER                 lavnya
+GET_RELATIONSHIP Arit SON                      laki
+GET_RELATIONSHIP Vich SIBLINGS                 chit, ish, aras, satya        SEQUENCE!!!
+GET_RELATIONSHIP Jnki BROTHER                  ahit
+GET_RELATIONSHIP Lika BROTHER_IN_LAW           chit, ish, aras               SEQUENCE!!!
+GET_RELATIONSHIP Vich SISTER_IN_LAW            amba chitra
+GET_RELATIONSHIP Yodhan MATERNAL_AUNT          tritha
+GET_RELATIONSHIP Yodhan MATERNAL_UNCLE         vritha
+GET_RELATIONSHIP Jnki PATERNAL_AUNT            satya
+GET_RELATIONSHIP Jnki PATERNAL_UNCLE           chit, ish, vich               SEQUENCE!!!

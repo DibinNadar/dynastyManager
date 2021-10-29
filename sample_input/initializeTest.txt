@@ -1,0 +1,43 @@
+CREATE_DYNASTY Anga Shan Lengaburu
+
+ADD_CHILD Anga Chit MALE
+ADD_CHILD Anga Ish MALE
+ADD_CHILD Anga Vich MALE
+ADD_CHILD Anga Aras MALE
+ADD_CHILD Anga Satya FEMALE
+
+
+MARRY Amba Chit
+MARRY Lika Vich
+MARRY Chitra Aras
+MARRY Satya Vyan
+
+ADD_CHILD Amba Dritha FEMALE
+ADD_CHILD Amba Tritha FEMALE
+ADD_CHILD Amba Vritha MALE
+
+ADD_CHILD Lika Vila FEMALE
+ADD_CHILD Lika Chika FEMALE
+
+ADD_CHILD Chitra Jnki FEMALE
+ADD_CHILD Chitra Ahit MALE
+
+ADD_CHILD Satya Asva MALE
+ADD_CHILD Satya Vyas MALE
+ADD_CHILD Satya Atya FEMALE
+
+
+MARRY Dritha Jaya
+MARRY Jnki Arit
+MARRY Satvy Asva
+MARRY Krpi Vyas
+
+ADD_CHILD Dritha Yodhan MALE
+
+ADD_CHILD Jnki Laki MALE
+ADD_CHILD Jnki Lavnya FEMALE
+
+ADD_CHILD Satvy Vasa MALE
+
+ADD_CHILD Krpi Kriya MALE
+ADD_CHILD Krpi Krithi FEMALE

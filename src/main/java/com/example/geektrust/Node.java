@@ -65,6 +65,4 @@ public class Node {
     public HashSet<String> getKids() {
         return kids;
     }
-
-    // TODO override to string
 }
