@@ -22,7 +22,3 @@ GET_RELATIONSHIP Yodhan MATERNAL_AUNT          tritha
 GET_RELATIONSHIP Yodhan MATERNAL_UNCLE         vritha
 GET_RELATIONSHIP Jnki PATERNAL_AUNT            satya
 GET_RELATIONSHIP Jnki PATERNAL_UNCLE           chit, ish, vich
-
-java -jar <path_to>/geektrust.jar <absolute_path_to_input_file>
-mvn package
-look in target

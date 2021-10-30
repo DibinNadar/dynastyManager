@@ -20,8 +20,8 @@ public class Dynasty {
         this.familyTree.put(queenNode.getName(), queenNode);
         this.familyTree.put(kingNode.getName(), kingNode);
 
-        queenNode.addPartnerNameOnlyOnce(kingNode.getName());
-        kingNode.addPartnerNameOnlyOnce(queenNode.getName());
+        queenNode.assignPartnerIfSingle(kingNode.getName());
+        kingNode.assignPartnerIfSingle(queenNode.getName());
     }
 
     public String addKid(String motherName, String kidName, Gender kidGender) {
@@ -43,7 +43,7 @@ public class Dynasty {
         Node kid = new Node(kidName, kidGender);
         this.familyTree.put(kidName, kid);
 
-        kid.addMotherOnlyOnce(motherName);
+        kid.assignMotherIfMotherLess(motherName);
         mother.addKidToMother(kidName);
 
         return "CHILD_ADDITION_SUCCEEDED";
@@ -57,11 +57,11 @@ public class Dynasty {
         Node female, male;
 
         // Identify the new individual
-
-        if (!this.familyTree.containsKey(femaleName)) {
+        if (!this.familyTree.containsKey(femaleName)) {   // Female is the outsider
             male = this.familyTree.get(maleName);
             female = new Node(femaleName, Gender.FEMALE);
-        } else {
+        }
+        else {                                            // Male is the outsider
             female = this.familyTree.get(femaleName);
             male = new Node(maleName, Gender.MALE);
         }
@@ -76,81 +76,72 @@ public class Dynasty {
         this.familyTree.put(femaleName, female);
         this.familyTree.put(maleName, male);
 
-        return male.addPartnerNameOnlyOnce(femaleName) && female.addPartnerNameOnlyOnce(maleName);
+        return male.assignPartnerIfSingle(femaleName) && female.assignPartnerIfSingle(maleName);
     }
 
-    // TODO is no one fits then return NONE!!
-    public String getRelationship(String relationOf, Relation relationship) { // TODO better names
+    public String getRelationship(String relationOf, Relation relationship) {
 
-        String relationsNotFound = "NONE";
+        String noValidRelations = "NONE";
         String personNotFound = "PERSON_NOT_FOUND";
-        String relation;
 
         if (!containsOne(relationOf)) return personNotFound;
-//        if (!containsOne(relationOf)) return relationsNotFound;
 
         switch (relationship) {
 
             case MOTHER:
                 String mother = getOne(relationOf).getMotherName();
-//                relation = getOne(relationOf).getMotherName();
-                return mother == null ? relationsNotFound : mother;
+                return mother == null ? noValidRelations : mother;
 
             case FATHER:
-//                 = getRelationship(relationOf, Relation.MOTHER);
                 mother = getRelationship(relationOf, Relation.MOTHER);
-                if (mother.equals(relationsNotFound)) return relationsNotFound;
+                if (mother.equals(noValidRelations)) return noValidRelations;
 
                 String father = getOne(mother).getPartnerName();
-                return father == null ? relationsNotFound : father;
-//            relation = getOne(mother).getPartnerName();
-//                return relation == null ? relationsNotFound : relation;
+                return father == null ? noValidRelations : father;
 
             case CHILDREN:
-                return findAllChildren(relationOf, relationsNotFound);
+                return findAllChildren(relationOf, noValidRelations);
 
             case DAUGHTER:
-                return findChildrenByGender(relationOf, relationsNotFound, Gender.FEMALE);
+                return findChildrenByGender(relationOf, noValidRelations, Gender.FEMALE);
 
             case SON:
-                return findChildrenByGender(relationOf, relationsNotFound, Gender.MALE);
+                return findChildrenByGender(relationOf, noValidRelations, Gender.MALE);
 
             case SIBLINGS:
-                return findAllSiblings(relationOf, relationsNotFound);
+                return findAllSiblings(relationOf, noValidRelations);
 
             case SISTER:
-                return findSiblingsByGender(relationOf, relationsNotFound, Gender.FEMALE);
+                return findSiblingsByGender(relationOf, noValidRelations, Gender.FEMALE);
 
             case BROTHER:
-                return findSiblingsByGender(relationOf, relationsNotFound, Gender.MALE);
+                return findSiblingsByGender(relationOf, noValidRelations, Gender.MALE);
 
             case SISTER_IN_LAW:
-                return findSisterInLaw(relationOf,relationsNotFound);
+                return findSisterInLaw(relationOf,noValidRelations);
 
             case BROTHER_IN_LAW:
-                return findBrotherInLaw(relationOf,relationsNotFound);
+                return findBrotherInLaw(relationOf,noValidRelations);
 
             case MATERNAL_AUNT:
-//                return findMaternalPaternalAuntUncle(relationOf,personNotFound,Relation.MOTHER, Gender.FEMALE);
-                return findMaternalPaternalAuntUncle(relationOf,relationsNotFound,Relation.MOTHER, Gender.FEMALE);
+                return findAuntOrUncle(relationOf,noValidRelations,Relation.MOTHER, Gender.FEMALE);
 
             case MATERNAL_UNCLE:
-                return findMaternalPaternalAuntUncle(relationOf,relationsNotFound,Relation.MOTHER,Gender.MALE);
+                return findAuntOrUncle(relationOf,noValidRelations,Relation.MOTHER,Gender.MALE);
 
             case PATERNAL_AUNT:
-                return findMaternalPaternalAuntUncle(relationOf,relationsNotFound,Relation.FATHER,Gender.FEMALE);
+                return findAuntOrUncle(relationOf,noValidRelations,Relation.FATHER,Gender.FEMALE);
 
             case PATERNAL_UNCLE:
-                return findMaternalPaternalAuntUncle(relationOf,relationsNotFound,Relation.FATHER,Gender.MALE);
-
+                return findAuntOrUncle(relationOf,noValidRelations,Relation.FATHER,Gender.MALE);
 
             default:
-                return relationsNotFound;
+                return noValidRelations;
         }
     }
 
     private String findAllChildren(String relationOf, String relationsNotFound) {
-        if (getOne(relationOf).getPartnerName() == null) return relationsNotFound; // unmarried
+        if (getOne(relationOf).getPartnerName() == null) return relationsNotFound; // unmarried hence can't have kids
 
         String mother;
         if (getOne(relationOf).getGender().equals(Gender.MALE)) {
@@ -167,7 +158,7 @@ public class Dynasty {
         String kids = findAllChildren(relationOf, relationsNotFound);
         if (kids.equals(relationsNotFound)) return relationsNotFound;
 
-        return genderFilter(kids,relationsNotFound,gender);
+        return filterByGender(kids,relationsNotFound,gender);
     }
 
     private String findAllSiblings(String relationOf, String relationsNotFound) {
@@ -189,9 +180,10 @@ public class Dynasty {
         String siblings = findAllSiblings(relationOf, relationsNotFound);
         if (siblings.equals(relationsNotFound)) return relationsNotFound;
 
-        return genderFilter(siblings,relationsNotFound,gender);
+        return filterByGender(siblings,relationsNotFound,gender);
     }
 
+    // TODO Try brevity
     private String findBrotherInLaw(String relationOf, String relationsNotFound){
         String partner = getOne(relationOf).getPartnerName();
         String mother = getOne(relationOf).getMotherName();
@@ -200,7 +192,7 @@ public class Dynasty {
             String sisters = findSiblingsByGender(relationOf,relationsNotFound,Gender.FEMALE);
             if (sisters.equals(relationsNotFound)) return relationsNotFound;
 
-            List<String> sisterList = genderFilterList(sisters, Gender.FEMALE);
+            List<String> sisterList = filterByGenderIntoList(sisters, Gender.FEMALE);
 
             StringBuilder brotherInLaw = new StringBuilder();
 
@@ -227,7 +219,7 @@ public class Dynasty {
 
             StringBuilder sisterInLaw = new StringBuilder();
 
-            List<String> brotherList = genderFilterList(brothers,Gender.MALE);
+            List<String> brotherList = filterByGenderIntoList(brothers,Gender.MALE);
             for (String brother:brotherList){
                 String wife = getOne(brother).getPartnerName();
                 if (wife != null){
@@ -244,7 +236,7 @@ public class Dynasty {
         return filteredSisterInLaw.isEmpty() ? relationsNotFound : filteredSisterInLaw;
     }
 
-    private String findMaternalPaternalAuntUncle(String relationOf, String relationsNotFound, Relation relation, Gender gender){
+    private String findAuntOrUncle(String relationOf, String relationsNotFound, Relation relation, Gender gender){
         String parent = getRelationship(relationOf, relation);
         if (parent.equals(relationsNotFound)) return relationsNotFound;
         return findSiblingsByGender(parent,relationsNotFound,gender);
@@ -265,25 +257,21 @@ public class Dynasty {
     public Node getQueenNode() {
         return queenNode;
     }
-
     public Node getKingNode() {
         return kingNode;
     }
-
     public String getDynastyName() {
         return dynastyName;
     }
 
     private String beautifyOutput(List<String> input){
         StringBuilder builder = new StringBuilder();
-
         for (String string: input){
             builder.append(string).append(" ");
         }
         return builder.toString();
     }
-
-    private String genderFilter(String inputString, String relationsNotFound, Gender gender){
+    private String filterByGender(String inputString, String relationsNotFound, Gender gender){
         String[] array = inputString.split(" ");
 
         List<String> filteredByGenderList = Arrays
@@ -293,8 +281,7 @@ public class Dynasty {
 
         return filteredByGenderList.isEmpty() ? relationsNotFound : beautifyOutput(filteredByGenderList);
     }
-
-    private List<String> genderFilterList(String inputString, Gender gender){
+    private List<String> filterByGenderIntoList(String inputString, Gender gender){
         String[] array = inputString.split(" ");
 
         return Arrays
