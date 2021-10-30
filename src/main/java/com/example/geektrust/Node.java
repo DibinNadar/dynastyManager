@@ -2,7 +2,7 @@ package com.example.geektrust;
 
 
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 // TODO throws null when invalid values called via Dynasty!!
 public class Node {
 
@@ -10,14 +10,14 @@ public class Node {
     private final Gender gender;
     private String partnerName;
     private String motherName;
-    private HashSet<String> kids;
+    private LinkedHashSet<String> kids;
 
     public Node(String name, Gender gender) {
         this.name = name;
         this.gender = gender;
         this.partnerName = null;
         this.motherName = null;
-        this.kids = new HashSet<>();
+        this.kids = new LinkedHashSet<>();
     }
 
 
@@ -62,7 +62,7 @@ public class Node {
         return motherName;
     }
 
-    public HashSet<String> getKids() {
+    public LinkedHashSet<String> getKids() {
         return kids;
     }
 }

@@ -17,33 +17,9 @@ public class FileReaderExperiment {
     public FileReaderExperiment(Dynasty currentDynasty) {
         FileReaderExperiment.currentDynasty = currentDynasty;
     }
-// test removable
-
-    public static void main(String[] args) throws IOException {
-
-        Path pathForDataInitialization = FileSystems.getDefault().getPath("sample_input/initializeTest.txt");
-//        printFile(pathForDataInitialization);
-        initializeTree(pathForDataInitialization);
-        // TODO in SIB
-
-        System.out.println("\n-------------Post Init-------------\n");
-
-        Path pathForDataQuery = FileSystems.getDefault().getPath("sample_input/queryTest.txt");
-
-        modifyAndVerifyData(pathForDataQuery);
 
 
-
-
-        // TODO checks to be added
-//        System.out.println("Exists : " + Files.exists(pathForDataInitialization));
-//        System.out.println("Readable : " + Files.isReadable(pathForDataInitialization));
-//        System.out.println("Writeable : " + Files.isWritable(pathForDataInitialization));
-
-
-    }
-
-    private static void initializeTree(Path path) { // TODO Make sure this is ONLY readable
+    static void initializeTree(Path path) { // TODO Make sure this is ONLY readable
 
         boolean initializeDynastyFlag = true;
 
@@ -107,7 +83,7 @@ public class FileReaderExperiment {
     }
 
 
-    private static void modifyAndVerifyData(Path path) {
+    static void modifyAndVerifyData(Path path) {
 
         try (BufferedReader fileReader = Files.newBufferedReader(path)) {
             String line;
