@@ -101,11 +101,11 @@ public class DeleteInFinalIteration {
         System.out.println("");
 
         System.out.println("----------------Siblings-------------------");
-        System.out.print(lengaburuFamilyTree.getRelationship("Anga", Relation.SIBLINGS).equals("NONE"));
-        System.out.print(lengaburuFamilyTree.getRelationship("Vich", Relation.SIBLINGS).equals("Chit Ish Aras Satya"));  // chit, ish, aras, satya
-        System.out.print(lengaburuFamilyTree.getRelationship("Jnki", Relation.SIBLINGS).equals("Ahit"));  // ahit
-        System.out.print(lengaburuFamilyTree.getRelationship("Arit", Relation.SIBLINGS).equals("NONE"));
-        System.out.print(lengaburuFamilyTree.getRelationship("Drithaaa", Relation.SIBLINGS).equals("PERSON_NOT_FOUND"));
+        System.out.print(lengaburuFamilyTree.getRelationship("Anga", Relation.SIBLING).equals("NONE"));
+        System.out.print(lengaburuFamilyTree.getRelationship("Vich", Relation.SIBLING).equals("Chit Ish Aras Satya"));  // chit, ish, aras, satya
+        System.out.print(lengaburuFamilyTree.getRelationship("Jnki", Relation.SIBLING).equals("Ahit"));  // ahit
+        System.out.print(lengaburuFamilyTree.getRelationship("Arit", Relation.SIBLING).equals("NONE"));
+        System.out.print(lengaburuFamilyTree.getRelationship("Drithaaa", Relation.SIBLING).equals("PERSON_NOT_FOUND"));
         System.out.println("");
 
         System.out.println("----------------Sister-------------------");

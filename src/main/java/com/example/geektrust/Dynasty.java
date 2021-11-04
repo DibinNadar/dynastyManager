@@ -113,7 +113,7 @@ public class Dynasty {
             case SON:
                 return findChildrenByGender(relationOf, noValidRelations, Gender.MALE);
 
-            case SIBLINGS:
+            case SIBLING:
                 return findAllSiblings(relationOf, noValidRelations);
 
             case SISTER:
