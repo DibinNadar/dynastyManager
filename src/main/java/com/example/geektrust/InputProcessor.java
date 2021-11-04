@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class InputProcessor {  //TODO BETTER NAME
+public class InputProcessor {
 
     static Dynasty currentDynasty;
 
@@ -13,7 +13,6 @@ public class InputProcessor {  //TODO BETTER NAME
         InputProcessor.currentDynasty = currentDynasty;
     }
 
-    // TODO Make sure this is ONLY readable
     static void initializeTree(InputStream is) {
         boolean initializeDynastyOnceFlag = true;
 
@@ -32,41 +31,34 @@ public class InputProcessor {  //TODO BETTER NAME
                     String dynastyName = toCapitalize(words[3]);
 
                     currentDynasty = new Dynasty(queenName, kingName, dynastyName);
-//                    currentDynasty = new Dynasty(queenName, kingName, dynastyName);
 //                    System.out.println("DYNASTY_CREATION_SUCCEEDED");
                     initializeDynastyOnceFlag = false;
-                }
-                else if (!callMethod.equalsIgnoreCase("CREATE_DYNASTY") && initializeDynastyOnceFlag) {
+                } else if (!callMethod.equalsIgnoreCase("CREATE_DYNASTY") && initializeDynastyOnceFlag) {
 //                    System.out.println("DYNASTY_CREATION_FAILED");
                     return;
-                }
-
-                else if (callMethod.equalsIgnoreCase("MARRY")) {
+                } else if (callMethod.equalsIgnoreCase("MARRY")) {
                     String femaleName = toCapitalize(words[1]);
                     String maleName = toCapitalize(words[2]);
 
-                    currentDynasty.marry(femaleName,maleName);
+                    currentDynasty.marry(femaleName, maleName);
 //                    System.out.println("Married " + maleName +" to "+ femaleName);
 //                    System.out.println("MARRIAGE_SUCCEEDED");
 
-                }
-                else if (callMethod.equalsIgnoreCase("GET_RELATIONSHIP")) {
+                } else if (callMethod.equalsIgnoreCase("GET_RELATIONSHIP")) {
                     String relationOf = toCapitalize(words[1]);
                     String relationship = words[2].toUpperCase();
                     relationship = relationship.replace('-', '_');
 
-                    currentDynasty.getRelationship(relationOf,Relation.valueOf(relationship));
+                    currentDynasty.getRelationship(relationOf, Relation.valueOf(relationship));
 //                    System.out.println("QUERIED_RELATION");
-                }
-                else if (callMethod.equalsIgnoreCase("ADD_CHILD")) {
+                } else if (callMethod.equalsIgnoreCase("ADD_CHILD")) {
                     String motherName = toCapitalize(words[1]);
                     String childName = toCapitalize(words[2]);
                     String childGender = words[3].toUpperCase();
 
                     currentDynasty.addKid(motherName, childName, Gender.valueOf(childGender));
 //                    System.out.println("Added Child :"+ childName);
-                }
-                else System.out.println("INVALID_LINE");
+                } else System.out.println("INVALID_LINE");
 
             }
 //            System.out.println("Dynasty Initialized Successfully!");
@@ -94,25 +86,22 @@ public class InputProcessor {  //TODO BETTER NAME
 
                     try {
                         System.out.println(currentDynasty.addKid(motherName, childName, Gender.valueOf(childGender)));
-                    }catch (IllegalArgumentException ex){
+                    } catch (IllegalArgumentException ex) {
                         System.out.println("CHILD_ADDITION_FAILED"); // Invalid Gender
                     }
 
-                }
-                else
-                    if (callMethod.equalsIgnoreCase("GET_RELATIONSHIP")) {
+                } else if (callMethod.equalsIgnoreCase("GET_RELATIONSHIP")) {
                     String name = toCapitalize(words[1]);
                     String relation = words[2].toUpperCase();
                     relation = relation.replace('-', '_');
 
                     try {
-                        System.out.println(currentDynasty.getRelationship(name,Relation.valueOf(relation)));
-                    }catch (IllegalArgumentException ex){
+                        System.out.println(currentDynasty.getRelationship(name, Relation.valueOf(relation)));
+                    } catch (IllegalArgumentException ex) {
                         System.out.println("INVALID_RELATION_REQUESTED");
                     }
 
-                }
-                else System.out.println("INVALID_LINE");
+                } else System.out.println("INVALID_LINE");
 
             }
         } catch (IOException e) {
@@ -121,7 +110,7 @@ public class InputProcessor {  //TODO BETTER NAME
     }
 
     public static String toCapitalize(String string) {
-        return string.substring(0,1).toUpperCase() + string.substring(1).toLowerCase();
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 
 }
