@@ -98,7 +98,7 @@ public class InputProcessor {
                     try {
                         System.out.println(currentDynasty.getRelationship(name, Relation.valueOf(relation)));
                     } catch (IllegalArgumentException ex) {
-                        System.out.println("INVALID_RELATION_REQUESTED");
+                        System.out.println("NONE");
                     }
 
                 } else System.out.println("INVALID_LINE");
@@ -110,7 +110,7 @@ public class InputProcessor {
     }
 
     public static String toCapitalize(String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase().trim();
     }
 
 }

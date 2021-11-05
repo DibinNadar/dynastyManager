@@ -49,7 +49,6 @@ public class Dynasty {
         if (kid.assignMotherIfKidHasNoMother(motherName) && mother.addKidToMother(kidName)) {
             return "CHILD_ADDITION_SUCCEEDED";
         }
-
         return "CHILD_ADDITION_FAILED";
     }
 

@@ -1,9 +1,6 @@
 package com.example.geektrust;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class DynastyTest {
 
@@ -166,25 +163,36 @@ class DynastyTest {
             dynasty.addKid("Pavetta", "Cirilla", Gender.FEMALE);
         }
 
-        @ParameterizedTest
-        @MethodSource("relationList")
-        void should_ReturnPersonNotFound_When_NodeNotInDynasty(Relation relation) {
-            Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", relation));
-        }
+//        @ParameterizedTest
+//        @MethodSource("relationList")
+//        void should_ReturnPersonNotFound_When_NodeNotInDynasty(Relation relation) {
+//            Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", relation));
+//        }
+//
+//        private Relation[] relationList() {
+//            return Relation.values();
+//        }
+//
+//        @ParameterizedTest
+//        @CsvSource({"MOTHER", "FATHER", "SIBLING", "SISTER", "BROTHER", "MATERNAL_AUNT", "MATERNAL_UNCLE", "PATERNAL_AUNT", "PATERNAL_UNCLE"})
+//        void should_ReturnNone_When_NodeFromDifferentBloodline(Relation relation) {
+//            Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", relation));
+//        }
 
-        private Relation[] relationList() {
-            return Relation.values();
-        }
-
-        @ParameterizedTest
-        @CsvSource({"MOTHER", "FATHER", "SIBLING", "SISTER", "BROTHER", "MATERNAL_AUNT", "MATERNAL_UNCLE", "PATERNAL_AUNT", "PATERNAL_UNCLE"})
-        void should_ReturnNone_When_NodeFromDifferentBloodline(Relation relation) {
-            Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", relation));
-        }
 
         @Nested
         @DisplayName("Testing Queries to get Mother")
         class mother {
+
+            @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.MOTHER));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.MOTHER));
+            }
 
             @Test
             void should_ReturnMother_When_NodeInBloodline() {
@@ -197,6 +205,16 @@ class DynastyTest {
         class father {
 
             @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.FATHER));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.FATHER));
+            }
+
+            @Test
             void should_ReturnFather_When_NodeInBloodline() {
                 Assertions.assertEquals("Coram", dynasty.getRelationship("Corbett", Relation.FATHER));
             }
@@ -205,6 +223,12 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Children")
         class children {
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.CHILDREN));
+            }
+
             @Test
             void should_ReturnNone_When_NodeIsUnmarried() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Adela", Relation.CHILDREN));
@@ -224,6 +248,12 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Daughters")
         class daughters {
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.DAUGHTER));
+            }
+
             @Test
             void should_ReturnNone_When_NodeIsUnmarried() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Adela", Relation.DAUGHTER));
@@ -243,6 +273,12 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Sons")
         class sons {
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.SON));
+            }
+
             @Test
             void should_ReturnNone_When_NodeIsUnmarried() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Adela", Relation.SON));
@@ -264,6 +300,16 @@ class DynastyTest {
         class siblings {
 
             @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.SIBLING));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.SIBLING));
+            }
+
+            @Test
             void should_ReturnNone_When_NodeHasNoSiblings() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Pavetta", Relation.SIBLING));
             }
@@ -278,6 +324,16 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Sisters")
         class sisters {
+
+            @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.SISTER));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.SISTER));
+            }
 
             @Test
             void should_ReturnNone_When_NodeHasNoSisters() {
@@ -295,6 +351,16 @@ class DynastyTest {
         class brothers {
 
             @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.BROTHER));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.BROTHER));
+            }
+
+            @Test
             void should_ReturnNone_When_NodeHasNoBrothers() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Dagorad", Relation.BROTHER));
             }
@@ -308,6 +374,11 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Sisters in law")
         class sisterInLaw {
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.SISTER_IN_LAW));
+            }
 
             @Test
             void should_ReturnNone_When_NodeHasNoSister_in_laws() {
@@ -325,6 +396,11 @@ class DynastyTest {
         class brotherInLaw {
 
             @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.BROTHER_IN_LAW));
+            }
+
+            @Test
             void should_ReturnNone_When_NodeHasNoBrother_in_laws() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Roegnar", Relation.BROTHER_IN_LAW));
             }
@@ -338,6 +414,16 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Maternal Aunt")
         class maternalAunt {
+
+            @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.MATERNAL_AUNT));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.MATERNAL_AUNT));
+            }
 
             @Test
             void should_ReturnNone_When_NodeHasNoMaternalAunts() {
@@ -355,6 +441,16 @@ class DynastyTest {
         class maternalUncle {
 
             @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.MATERNAL_UNCLE));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.MATERNAL_UNCLE));
+            }
+
+            @Test
             void should_ReturnNone_When_NodeHasNoMaternalUncles() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Riannon", Relation.MATERNAL_UNCLE));
             }
@@ -368,6 +464,16 @@ class DynastyTest {
         @Nested
         @DisplayName("Testing Queries to get Paternal Aunt")
         class paternalAunt {
+
+            @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.PATERNAL_AUNT));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.PATERNAL_AUNT));
+            }
 
             @Test
             void should_ReturnNone_When_NodeHasNoPaternalAunts() {
@@ -385,6 +491,16 @@ class DynastyTest {
         class paternalUncle {
 
             @Test
+            void should_ReturnNone_When_NodeFromDifferentBloodline() {
+                Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Robert", Relation.PATERNAL_UNCLE));
+            }
+
+            @Test
+            void should_ReturnPersonNotFound_When_NodeNotInDynasty() {
+                Assertions.assertEquals(personNotFound, dynasty.getRelationship("UnknownNode", Relation.PATERNAL_UNCLE));
+            }
+
+            @Test
             void should_ReturnNone_When_NodeHasNoPaternalUncles() {
                 Assertions.assertEquals(noValidRelations, dynasty.getRelationship("Cirilla", Relation.PATERNAL_UNCLE));
             }
@@ -395,4 +511,26 @@ class DynastyTest {
             }
         }
     }
+
+    @Test
+    void should_ReturnQueenNode_When_Called(){
+        Dynasty dynasty = new Dynasty("Anga", "Shan", "Lengaburu");
+
+        Assertions.assertEquals("Anga",dynasty.getQueenNode().getName());
+    }
+
+    @Test
+    void should_ReturnKingNode_When_Called(){
+        Dynasty dynasty = new Dynasty("Anga", "Shan", "Lengaburu");
+
+        Assertions.assertEquals("Shan",dynasty.getKingNode().getName());
+    }
+
+    @Test
+    void should_ReturnDynasty_When_Called(){
+        Dynasty dynasty = new Dynasty("Anga", "Shan", "Lengaburu");
+
+        Assertions.assertEquals("Lengaburu",dynasty.getDynastyName());
+    }
+
 }

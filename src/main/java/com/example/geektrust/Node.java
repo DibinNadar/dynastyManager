@@ -3,7 +3,7 @@ package com.example.geektrust;
 
 import java.util.LinkedHashSet;
 
-public class Node {// TODO Add generics wherever possible
+public class Node {
 
     private final String name;
     private final Gender gender;
